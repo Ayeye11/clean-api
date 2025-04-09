@@ -40,9 +40,6 @@
       ],
       "@adapters/*": [
         "src/adapters/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
       ]
     }
   }
