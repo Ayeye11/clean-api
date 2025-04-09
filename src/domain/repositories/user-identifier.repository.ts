@@ -2,7 +2,7 @@ import type { UserIdentifier } from "@domain/entities";
 
 interface UserIdentifierRepository {
   // Create
-  create(): Promise<void>;
+  create(user: UserIdentifier): Promise<void>;
 
   // Read
   findOneBy(identifier: {
