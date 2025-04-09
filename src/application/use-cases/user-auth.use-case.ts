@@ -30,7 +30,7 @@ class AuthUseCase {
       // Setup user
       const user: UserIdentifier = {
         id: this.idSvc.create(),
-        roleId: "NOT_IMPLEMENTED",
+        roleId: "NOT_IMPLEMENTED", // TODO:
         email: data.email,
         username: data.username,
         password: await this.hashSvc.create(data.password),
