@@ -9,16 +9,13 @@ interface UserIdentifierRepository {
     id?: string;
     email?: string;
     username?: string;
-  }): Promise<UserIdentifier | undefined>;
-  exists(identifier: { email?: string; username?: string }): Promise<boolean>;
-  exists(
-    identifier: { email?: string; username?: string },
-    info: true,
-  ): Promise<string>;
-  exists(
-    identifier: { email?: string; username?: string },
-    info?: boolean,
-  ): Promise<boolean | string>;
+  }): Promise<UserIdentifier | null>;
+
+  isAvailable(identifier: {
+    email: string;
+    username: string;
+  }): Promise<null | "email" | "username">;
+
   findMany(limit: number, offset: number): Promise<UserIdentifier[]>;
 }
 
