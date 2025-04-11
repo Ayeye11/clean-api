@@ -24,7 +24,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     // Paths
-    "rootDir": ".",
+    "baseUrl": ".",
     "paths": {
       "@domain/*": [
         "src/domain/*"
