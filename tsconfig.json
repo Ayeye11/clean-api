@@ -7,11 +7,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    // Mode
+    "moduleResolution": "node",
     "verbatimModuleSyntax": true,
     "noEmit": true,
     // Best practices
@@ -26,8 +23,8 @@
     // Decorators
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    // Path alias
-    "baseUrl": ".",
+    // Paths
+    "rootDir": ".",
     "paths": {
       "@domain/*": [
         "src/domain/*"
@@ -35,11 +32,11 @@
       "@application/*": [
         "src/application/*"
       ],
-      "@infra/*": [
-        "src/infra/*"
+      "@interfaces/*": [
+        "src/interfaces/*"
       ],
-      "@adapters/*": [
-        "src/adapters/*"
+      "@infrastructure/*": [
+        "src/infrastructure/*"
       ]
     }
   }
