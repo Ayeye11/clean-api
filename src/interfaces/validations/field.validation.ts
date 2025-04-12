@@ -1,5 +1,6 @@
 import type { FieldRules } from "@domain/security/rules";
 
+// Target must be an string or number
 function fieldValidation(
 	target: unknown,
 	rules: FieldRules | undefined,
