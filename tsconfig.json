@@ -7,8 +7,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    // Mode
-    "moduleResolution": "node",
+    "allowJs": true,
+    // Bundler mode
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": true,
     // Best practices
@@ -23,7 +24,7 @@
     // Decorators
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    // Paths
+    // Path
     "baseUrl": ".",
     "paths": {
       "@domain/*": [

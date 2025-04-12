@@ -7,13 +7,11 @@ interface UserRepository {
 
 	// read
 	isAvailable(data: {
-		id?: string;
 		email?: string;
 		username?: string;
 	}): Promise<boolean>;
 	isAvailable(
 		data: {
-			id?: string;
 			email?: string;
 			username?: string;
 		},

@@ -8,7 +8,7 @@ class AuthController {
 	async register(req: RequestHttp, res: ResponseHttp) {
 		try {
 			// Get body
-			const [err, dto] = RegisterDto.create(req.body);
+			const [err, dto] = RegisterDto.create(req.readBody());
 			if (err) {
 				res.sendError(400, err);
 				return;
@@ -31,7 +31,7 @@ class AuthController {
 	async login(req: RequestHttp, res: ResponseHttp) {
 		try {
 			// Get body
-			const [err, dto] = LoginDto.create(req.body);
+			const [err, dto] = LoginDto.create(req.readBody());
 			if (err) {
 				res.sendError(400, err);
 				return;
