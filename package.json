@@ -2,7 +2,8 @@
   "name": "clean-api",
   "module": "index.ts",
   "scripts": {
-    "dev": "bun run /src/server.ts"
+    "dev": "bun run /src/server.ts",
+    "tst": "bun run /src/tst.ts"
   },
   "type": "module",
   "private": true,

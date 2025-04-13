@@ -1,28 +1,28 @@
 import type { TokenAuthPayload } from "@domain/service";
 
-interface RequestContext {
+// ---- REQUEST
+export interface RequestContext {
 	user?: TokenAuthPayload;
+	url?: UrlParams;
+	method?: string;
 }
 
-interface RequestHttp {
-	getMethod(): string;
-	getUrl(): string;
-	readBody(): Record<string, unknown>;
+export interface UrlParams {
+	path?: string;
+	query?: Record<string, string>;
+	params?: Record<string, string>;
+}
+
+export interface Request {
+	context: RequestContext;
+	readBody(): Promise<Record<string, unknown>>;
 	headerToken(): string | undefined;
 	setUser(data: TokenAuthPayload): void;
-	getUser(): TokenAuthPayload | undefined;
 }
 
-interface ResponseHttp {
+// ---- RESPONSE
+export interface Response {
 	sendSuccess(status: number, data?: unknown, message?: string): void;
 	sendError(status: number, errMsg?: string): void;
 	sendThrow(err: unknown): void;
 }
-
-interface HttpContext {
-	req: RequestHttp;
-	res: ResponseHttp;
-	next(): void;
-}
-
-export type { HttpContext, RequestContext, RequestHttp, ResponseHttp };
