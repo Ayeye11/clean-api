@@ -19,4 +19,10 @@ interface ResponseHttp {
 	sendThrow(err: unknown): void;
 }
 
-export type { RequestContext, RequestHttp, ResponseHttp };
+interface HttpContext {
+	req: RequestHttp;
+	res: ResponseHttp;
+	next(): void;
+}
+
+export type { HttpContext, RequestContext, RequestHttp, ResponseHttp };

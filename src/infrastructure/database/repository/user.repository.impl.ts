@@ -1,12 +1,13 @@
 import type { UserIdentifier } from "@domain/entities";
 import type { UserRepository } from "@domain/repositories";
 import type { Repository } from "typeorm";
-import type { UserIdentifierModel } from "../models";
+import { UserIdentifierModel } from "../models";
 
 export class UserRepositoryImpl implements UserRepository {
 	constructor(private readonly orm: Repository<UserIdentifierModel>) {}
 
-	async createIdentifier(model: UserIdentifier): Promise<void> {
+	async createIdentifier(entity: UserIdentifier): Promise<void> {
+		const model = UserIdentifierModel.create(entity);
 		await this.orm.save(model);
 	}
 
@@ -38,20 +39,27 @@ export class UserRepositoryImpl implements UserRepository {
 	async findOne(identifier: {
 		email: string;
 		username: string;
-	}): Promise<UserIdentifier | null> {
+	}): Promise<UserIdentifier | undefined> {
 		if (identifier.email) {
-			const u = this.orm.findOneBy({ email: identifier.email });
+			const u = this.orm
+				.findOneBy({ email: identifier.email })
+				.then((u) => u?.toEntity());
 			if (u) return u;
 		}
 
 		if (identifier.username) {
-			return this.orm.findOneBy({ username: identifier.username });
+			return this.orm
+				.findOneBy({ username: identifier.username })
+				.then((u) => u?.toEntity());
 		}
 
-		return null;
+		return undefined;
 	}
 
 	async findMany(limit: number, offset: number): Promise<UserIdentifier[]> {
-		return new Array<UserIdentifier>();
+		const users = await this.orm
+			.find({ take: limit, skip: offset })
+			.then((users) => users.map((u) => u.toEntity()));
+		return users;
 	}
 }

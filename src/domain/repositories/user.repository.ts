@@ -21,7 +21,7 @@ interface UserRepository {
 	findOne(identifier: {
 		email: string;
 		username: string;
-	}): Promise<UserIdentifier | null>;
+	}): Promise<UserIdentifier | undefined>;
 
 	findMany(limit: number, offset: number): Promise<UserIdentifier[]>;
 }
