@@ -1,56 +1,67 @@
 import type { Request, Response } from "@interfaces/http";
 import { isMatchMethod, Method } from "./method.http";
 import { isMatchUrl } from "./url.http";
-
-type Controller = (req: Request, res: Response) => void;
+import { runMiddlewares, type Controller } from "./middleware.http";
 
 export class Router {
-	private mainPath: string;
+  private mainPath: string;
 
-	constructor(
-		private readonly req: Request,
-		private readonly res: Response,
-		path?: string,
-	) {
-		this.mainPath = path ?? "";
-	}
+  constructor(
+    private readonly req: Request,
+    private readonly res: Response,
+    path?: string,
+  ) {
+    this.mainPath = path ?? "";
+  }
 
-	subRouter(path: string): Router {
-		return new Router(this.req, this.res, this.mainPath + path);
-	}
+  // ---- SUB ROUTING
+  subRouter(path: string, ...middlewares: Controller[]): Router {
+    runMiddlewares(this.req, this.res, ...middlewares);
+    return new Router(this.req, this.res, this.mainPath + path);
+  }
 
-	post(path: string, controller: Controller) {
-		if (!isMatchMethod(this.req, Method.POST)) return;
-		if (!isMatchUrl(this.req, this.mainPath, path)) return;
+  // ---- MIDDLEWARES
+  use(...middlewares: Controller[]): void {
+    runMiddlewares(this.req, this.res, ...middlewares);
+  }
+  useWithPath(path: string, ...middlewares: Controller[]): void {
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
+    runMiddlewares(this.req, this.res, ...middlewares);
+  }
 
-		return controller(this.req, this.res);
-	}
+  // ---- CONTROLLERS ENDPOINTS
+  post(path: string, ...controllers: Controller[]) {
+    if (!isMatchMethod(this.req, Method.POST)) return;
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
 
-	get(path: string, controller: Controller) {
-		if (!isMatchMethod(this.req, Method.GET)) return;
-		if (!isMatchUrl(this.req, this.mainPath, path)) return;
+    runMiddlewares(this.req, this.res, ...controllers);
+  }
 
-		return controller(this.req, this.res);
-	}
+  get(path: string, ...controllers: Controller[]) {
+    if (!isMatchMethod(this.req, Method.GET)) return;
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
 
-	put(path: string, controller: Controller) {
-		if (!isMatchMethod(this.req, Method.PUT)) return;
-		if (!isMatchUrl(this.req, this.mainPath, path)) return;
+    runMiddlewares(this.req, this.res, ...controllers);
+  }
 
-		return controller(this.req, this.res);
-	}
+  put(path: string, ...controllers: Controller[]) {
+    if (!isMatchMethod(this.req, Method.PUT)) return;
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
 
-	patch(path: string, controller: Controller) {
-		if (!isMatchMethod(this.req, Method.PATCH)) return;
-		if (!isMatchUrl(this.req, this.mainPath, path)) return;
+    runMiddlewares(this.req, this.res, ...controllers);
+  }
 
-		return controller(this.req, this.res);
-	}
+  patch(path: string, ...controllers: Controller[]) {
+    if (!isMatchMethod(this.req, Method.PATCH)) return;
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
 
-	delete(path: string, controller: Controller) {
-		if (!isMatchMethod(this.req, Method.DELETE)) return;
-		if (!isMatchUrl(this.req, this.mainPath, path)) return;
+    runMiddlewares(this.req, this.res, ...controllers);
+  }
 
-		return controller(this.req, this.res);
-	}
+  delete(path: string, ...controllers: Controller[]) {
+    if (!isMatchMethod(this.req, Method.DELETE)) return;
+    if (!isMatchUrl(this.req, this.mainPath, path)) return;
+
+    runMiddlewares(this.req, this.res, ...controllers);
+  }
 }

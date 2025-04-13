@@ -34,7 +34,7 @@ export class ResponseImpl implements Response {
 
 	private sendJson(status: number, data: Record<string, unknown> | null): void {
 		this.res.writeHead(status, { "Content-Type": "application/json" });
-		this.res.end(data);
+		this.res.end(JSON.stringify(data));
 	}
 
 	sendSuccess(status: number, data?: unknown, message?: string): void {

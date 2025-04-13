@@ -1,11 +1,11 @@
 import type { AuthenticateUseCase } from "@application/use-case";
 import { LoginDto, RegisterDto } from "@interfaces/dtos/auth";
-import type { RequestHttp, ResponseHttp } from "@interfaces/http";
+import type { Request, Response } from "@interfaces/http";
 
 class AuthController {
 	constructor(private readonly authUseCase: AuthenticateUseCase) {}
 
-	async register(req: RequestHttp, res: ResponseHttp) {
+	async register(req: Request, res: Response) {
 		try {
 			// Get body
 			const [err, dto] = RegisterDto.create(await req.readBody());
@@ -28,7 +28,7 @@ class AuthController {
 		}
 	}
 
-	async login(req: RequestHttp, res: ResponseHttp) {
+	async login(req: Request, res: Response) {
 		try {
 			// Get body
 			const [err, dto] = LoginDto.create(await req.readBody());

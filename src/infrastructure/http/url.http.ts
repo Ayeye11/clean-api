@@ -62,7 +62,7 @@ function readPath(
 const isMatchUrl = (req: Request, ...paths: string[]): boolean => {
 	if (!req.context.url?.path) return false;
 
-	const path = paths.join();
+	const path = paths.join("");
 
 	const result = readPath(req.context.url?.path, path, true);
 	if (!result.matched) return false;
