@@ -15,6 +15,7 @@ export const runMiddlewares = (
   let lock = false;
 
   const next = () => {
+    if (res.hasSent()) return;
     if (lock) return;
     lock = true;
 
