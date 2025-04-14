@@ -1,35 +1,38 @@
-import { AuthenticateUseCase } from "@application/use-cases";
-import { UserIdentifierModel } from "@infrastructure/database/models";
-import { UserRepositoryImpl } from "@infrastructure/database/repository";
-import { setupRoutes } from "@infrastructure/routes";
-import ServerHttp from "@infrastructure/http-server";
-import {
-	BcryptService,
-	Database,
-	JwtService,
-	UuidService,
-} from "@infrastructure/services";
-import { AuthController } from "@interfaces/controllers";
+import { Server } from "node:http";
+import type { Routes } from "./routes";
 
-const main = async () => {
-	try {
-		const db = Database.getInstance();
-		await db.initialize();
+class ServerHttp {
+	private readonly server: Server;
 
-		const repo = new UserRepositoryImpl(db.getRepository(UserIdentifierModel));
-		const idSvc = new UuidService();
-		const hashSvc = new BcryptService();
-		const tokenSvc = new JwtService("secretKey");
-
-		const useCase = new AuthenticateUseCase(repo, idSvc, hashSvc, tokenSvc);
-
-		const controller = new AuthController(useCase);
-		const routes = setupRoutes(controller);
-
-		const server = new ServerHttp(routes);
-		server.run(3000, "localhost");
-	} catch (err) {
-		console.error(err);
+	constructor(routes: Routes) {
+		this.server = new Server(routes);
 	}
-};
-main();
+
+	run(port: number, host?: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.server.listen(port, host, () => {
+				console.log("Server running on %s:%d", host, port);
+				resolve();
+			});
+
+			this.server.on("error", (err) => {
+				console.error("Failed starting the server");
+				reject(err);
+			});
+		});
+	}
+
+	close(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			this.server.close((err) => {
+				console.error("Failed to close the server");
+				reject(err);
+			});
+
+			console.log("Server closed gracefully");
+			resolve();
+		});
+	}
+}
+
+export default ServerHttp;

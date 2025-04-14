@@ -1,4 +1,4 @@
-import type { IdService } from "@domain/service";
+import type { IdService } from "@application/services";
 import { v4, validate } from "uuid";
 
 export class UuidService implements IdService {

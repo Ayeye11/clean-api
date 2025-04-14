@@ -1,10 +1,10 @@
-import type { AuthController } from "@interfaces/controllers";
+import { RequestImpl, ResponseImpl, Router } from "@infrastructure/http";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { RequestImpl, ResponseImpl, Router } from "./http";
+import type { ControllerModule } from "./modules";
 
 export type Routes = (req: IncomingMessage, res: ServerResponse) => void;
 
-export const setupRoutes = (con: AuthController): Routes => {
+const setupRoutes = (controllers: ControllerModule): Routes => {
 	return (sReq, sRes) => {
 		const req = new RequestImpl(sReq);
 		const res = new ResponseImpl(sRes);
@@ -15,8 +15,9 @@ export const setupRoutes = (con: AuthController): Routes => {
 
 		// ---- AUTH
 		const auth = api.subRouter("/auth");
-		auth.post("/register", con.register.bind(con));
-		auth.post("/login", con.login.bind(con));
+		const authController = controllers.getAuth();
+		auth.post("/register", authController.register.bind(authController));
+		auth.post("/login", authController.login.bind(authController));
 
 		// Run Routes
 		const handled = router.handleRequest();
@@ -26,3 +27,5 @@ export const setupRoutes = (con: AuthController): Routes => {
 		}
 	};
 };
+
+export default setupRoutes;

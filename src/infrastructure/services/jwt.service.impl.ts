@@ -1,6 +1,6 @@
 import type { UserIdentifier } from "@domain/entities";
 import { AppErr } from "@domain/errs";
-import type { TokenAuthPayload, TokenService } from "@domain/service";
+import type { TokenAuthPayload, TokenService } from "@application/services";
 import jwt from "jsonwebtoken";
 const { sign, verify } = jwt;
 

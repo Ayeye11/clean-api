@@ -6,7 +6,7 @@ import type {
 	ResponseContext,
 } from "@interfaces/http";
 import { parseBody } from "./parse.http";
-import type { TokenAuthPayload } from "@domain/service";
+import type { TokenAuthPayload } from "@application/services";
 import { AppErr } from "@domain/errs";
 
 export class RequestImpl implements Request {
@@ -19,7 +19,7 @@ export class RequestImpl implements Request {
 		};
 	}
 
-	ctx: RequestContext;
+	ctx: RequestContext = {};
 
 	async readBody(): Promise<Record<string, unknown>> {
 		return parseBody(this.req);

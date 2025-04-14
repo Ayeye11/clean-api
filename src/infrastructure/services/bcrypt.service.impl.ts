@@ -1,4 +1,4 @@
-import type { HashService } from "@domain/service";
+import type { HashService } from "@application/services";
 import { compare, hash } from "bcrypt";
 
 export class BcryptService implements HashService {

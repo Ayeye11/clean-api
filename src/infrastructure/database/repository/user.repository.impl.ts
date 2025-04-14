@@ -41,16 +41,13 @@ export class UserRepositoryImpl implements UserRepository {
 		username: string;
 	}): Promise<UserIdentifier | undefined> {
 		if (identifier.email) {
-			const u = this.orm
-				.findOneBy({ email: identifier.email })
-				.then((u) => u?.toEntity());
-			if (u) return u;
+			const u = await this.orm.findOneBy({ email: identifier.email });
+			if (u) return u.toEntity();
 		}
 
 		if (identifier.username) {
-			return this.orm
-				.findOneBy({ username: identifier.username })
-				.then((u) => u?.toEntity());
+			const u = await this.orm.findOneBy({ username: identifier.username });
+			if (u) return u.toEntity();
 		}
 
 		return undefined;
