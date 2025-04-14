@@ -1,4 +1,4 @@
-import { AuthenticateUseCase } from "@application/use-case";
+import { AuthenticateUseCase } from "@application/use-cases";
 import { UserIdentifierModel } from "@infrastructure/database/models";
 import { UserRepositoryImpl } from "@infrastructure/database/repository";
 import { setupRoutes } from "@infrastructure/routes";

@@ -1,4 +1,4 @@
-import type { AuthenticateUseCase } from "@application/use-case";
+import type { AuthenticateUseCase } from "@application/use-cases";
 import { LoginDto, RegisterDto } from "@interfaces/dtos/auth";
 import type { Request, Response } from "@interfaces/http";
 

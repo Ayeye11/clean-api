@@ -3,7 +3,7 @@ import type { Request, Response } from "@interfaces/http";
 export type Controller = (
 	req: Request,
 	res: Response,
-	next?: () => void,
+	next: () => void,
 ) => void;
 
 export const runMiddlewares = (
