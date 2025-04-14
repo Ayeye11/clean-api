@@ -32,7 +32,7 @@ export class JwtService implements TokenService {
 				const payload = verify(token, this.secretKey);
 				resolve(payload as TokenAuthPayload);
 			} catch (err) {
-				reject(err);
+				reject(AppErr.invalidToken());
 			}
 		});
 	}

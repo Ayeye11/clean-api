@@ -1,3 +1,4 @@
+import { AppErr } from "@domain/errs";
 import type { IncomingMessage } from "node:http";
 import { StringDecoder } from "node:string_decoder";
 
@@ -18,7 +19,7 @@ export const parseBody = (
 				const parsed = JSON.parse(buffer);
 				resolve(parsed as Record<string, unknown>);
 			} catch (err) {
-				reject(err);
+				reject(AppErr.invalidArgument());
 			}
 		});
 
