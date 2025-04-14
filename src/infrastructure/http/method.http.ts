@@ -9,8 +9,8 @@ enum Method {
 }
 
 const isMatchMethod = (req: Request, method: Method): boolean => {
-	if (!req.context.method) return false;
-	return req.context.method === method;
+	if (!req.ctx.method) return false;
+	return req.ctx.method === method;
 };
 
 export { Method, isMatchMethod };

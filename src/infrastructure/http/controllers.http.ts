@@ -6,22 +6,18 @@ export type Controller = (
 	next: () => void,
 ) => void;
 
-export const runMiddlewares = (
+export const runControllers = (
 	req: Request,
 	res: Response,
 	...controllers: Controller[]
 ): void => {
 	let i = 0;
-	let lock = false;
 
 	const next = () => {
-		if (lock) return;
-		lock = true;
-
-		const middleware = controllers[i++];
-		if (middleware) {
-			lock = false;
-			middleware(req, res, next);
+		if (i >= controllers.length || res.ctx.sent) return;
+		const controller = controllers[i++];
+		if (controller) {
+			controller(req, res, next);
 		}
 	};
 

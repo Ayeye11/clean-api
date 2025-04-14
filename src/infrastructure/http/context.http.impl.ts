@@ -1,5 +1,10 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { RequestContext, Request, Response } from "@interfaces/http";
+import type {
+	RequestContext,
+	Request,
+	Response,
+	ResponseContext,
+} from "@interfaces/http";
 import { parseBody } from "./parse.http";
 import type { TokenAuthPayload } from "@domain/service";
 import { AppErr } from "@domain/errs";
@@ -8,13 +13,13 @@ export class RequestImpl implements Request {
 	private readonly req: IncomingMessage;
 	constructor(req: IncomingMessage) {
 		this.req = req;
-		this.context = {
+		this.ctx = {
 			method: req.method,
 			url: { path: req.url },
 		};
 	}
 
-	context: RequestContext;
+	ctx: RequestContext;
 
 	async readBody(): Promise<Record<string, unknown>> {
 		return parseBody(this.req);
@@ -25,7 +30,7 @@ export class RequestImpl implements Request {
 	}
 
 	setUser(data: TokenAuthPayload): void {
-		this.context.user = data;
+		this.ctx.user = data;
 	}
 }
 
@@ -37,11 +42,11 @@ export class ResponseImpl implements Response {
 		this.res.end(JSON.stringify(data));
 	}
 
-	private sent = false;
+	ctx: ResponseContext = {};
 
 	sendSuccess(status: number, data?: unknown, message?: string): void {
-		if (this.sent) return;
-		this.sent = true;
+		if (this.ctx.sent) return;
+		this.ctx.sent = true;
 
 		if (!data) {
 			this.sendJson(status, null);
@@ -62,14 +67,14 @@ export class ResponseImpl implements Response {
 	}
 
 	sendError(status: number, errMsg: string): void {
-		if (this.sent) return;
-		this.sent = true;
+		if (this.ctx.sent) return;
+		this.ctx.sent = true;
 		this.sendJson(status, { error: errMsg });
 	}
 
 	sendThrow(err: unknown): void {
-		if (this.sent) return;
-		this.sent = true;
+		if (this.ctx.sent) return;
+		this.ctx.sent = true;
 		if (err instanceof AppErr) {
 			const [status, msg] = err.toHttp();
 			this.sendJson(status, { error: msg });

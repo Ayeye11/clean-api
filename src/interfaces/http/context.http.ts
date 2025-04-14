@@ -1,28 +1,35 @@
 import type { TokenAuthPayload } from "@domain/service";
 
 // ---- REQUEST
-export interface RequestContext {
+interface RequestContext {
 	user?: TokenAuthPayload;
 	url?: UrlParams;
 	method?: string;
 }
 
-export interface UrlParams {
+interface UrlParams {
 	path?: string;
 	query?: Record<string, string>;
 	params?: Record<string, string>;
 }
 
-export interface Request {
-	context: RequestContext;
+interface Request {
+	ctx: RequestContext;
 	readBody(): Promise<Record<string, unknown>>;
 	headerToken(): string | undefined;
 	setUser(data: TokenAuthPayload): void;
 }
 
+interface ResponseContext {
+	sent?: boolean;
+}
+
 // ---- RESPONSE
-export interface Response {
+interface Response {
+	ctx: ResponseContext;
 	sendSuccess(status: number, data?: unknown, message?: string): void;
 	sendError(status: number, errMsg?: string): void;
 	sendThrow(err: unknown): void;
 }
+
+export type { RequestContext, Request, ResponseContext, Response };

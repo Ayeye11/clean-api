@@ -2,7 +2,7 @@ import { AuthenticateUseCase } from "@application/use-cases";
 import { UserIdentifierModel } from "@infrastructure/database/models";
 import { UserRepositoryImpl } from "@infrastructure/database/repository";
 import { setupRoutes } from "@infrastructure/routes";
-import ServerHttp from "@infrastructure/server";
+import ServerHttp from "@infrastructure/http-server";
 import {
 	BcryptService,
 	Database,
