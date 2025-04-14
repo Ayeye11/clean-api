@@ -1,8 +1,12 @@
+import type {
+	HashService,
+	IdService,
+	TokenService,
+} from "@application/services";
 import type { UserIdentifier } from "@domain/entities";
 import { AppErr } from "@domain/errs";
 import type { UserRepository } from "@domain/repositories";
 import { Role } from "@domain/security/permissions";
-import type { HashService, IdService, TokenService } from "@domain/service";
 
 export class AuthenticateUseCase {
 	constructor(
