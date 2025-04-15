@@ -1,4 +1,4 @@
-import { UserIdentifierModel } from "@infrastructure/database/models";
+import { models } from "@infrastructure/database/models";
 import { DataSource } from "typeorm";
 
 interface DatabaseConfig {
@@ -21,7 +21,7 @@ class Database {
 			password: cfg.password,
 			database: cfg.database,
 			synchronize: false,
-			entities: [UserIdentifierModel],
+			entities: models,
 			// migrations:
 		});
 	}

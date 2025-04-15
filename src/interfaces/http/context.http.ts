@@ -1,4 +1,4 @@
-import type { TokenAuthPayload } from "@domain/service";
+import type { TokenAuthPayload } from "@application/services";
 
 // ---- REQUEST
 interface RequestContext {

@@ -4,10 +4,12 @@ import { UserRepositoryImpl } from "@infrastructure/database/repository";
 import type { DataSource } from "typeorm";
 
 export class RepositoryModule {
+	// Repositories
 	private static user?: UserRepository;
 
 	constructor(private readonly driver: DataSource) {}
 
+	// Methods
 	getUser() {
 		if (!RepositoryModule.user) {
 			RepositoryModule.user = new UserRepositoryImpl(

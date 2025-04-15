@@ -8,7 +8,9 @@ export class ControllerModule {
 
 	getAuth() {
 		if (!ControllerModule.auth) {
-			ControllerModule.auth = new AuthController(this.app.getAuthUseCase());
+			ControllerModule.auth = new AuthController(
+				this.app.getAuthenticationUseCase(),
+			);
 		}
 
 		return ControllerModule.auth;

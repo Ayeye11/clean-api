@@ -2,6 +2,7 @@ import Database from "./database";
 import {
 	ApplicationModule,
 	ControllerModule,
+	MiddlewareModule,
 	RepositoryModule,
 } from "./modules";
 import setupRoutes from "./routes";
@@ -30,11 +31,14 @@ const main = async () => {
 		// Application
 		const application = new ApplicationModule(repositories, "secretKey");
 
+		// Middlewares
+		const middlewares = new MiddlewareModule(application);
+
 		// Controllers
 		const controllers = new ControllerModule(application);
 
 		// Routes
-		const routes = setupRoutes(controllers);
+		const routes = setupRoutes(middlewares, controllers);
 
 		// Server
 		const server = new ServerHttp(routes);

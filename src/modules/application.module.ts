@@ -10,6 +10,7 @@ import {
 	UuidService,
 } from "@infrastructure/services";
 import type { RepositoryModule } from "./repositories.module";
+import { AuthorizationUseCase } from "@application/use-cases/authorization.use-case";
 
 abstract class ServiceModule {
 	constructor(private readonly secretKey: string) {}
@@ -45,16 +46,17 @@ abstract class ServiceModule {
 
 export class ApplicationModule extends ServiceModule {
 	private repositories: RepositoryModule;
-	private static authUseCase?: AuthenticateUseCase;
+	private static authenticationUseCase?: AuthenticateUseCase;
+	private static authorizationUseCase?: AuthorizationUseCase;
 
 	constructor(repositories: RepositoryModule, secretKey: string) {
 		super(secretKey);
 		this.repositories = repositories;
 	}
 
-	getAuthUseCase() {
-		if (!ApplicationModule.authUseCase) {
-			ApplicationModule.authUseCase = new AuthenticateUseCase(
+	getAuthenticationUseCase() {
+		if (!ApplicationModule.authenticationUseCase) {
+			ApplicationModule.authenticationUseCase = new AuthenticateUseCase(
 				this.repositories.getUser(),
 				this.getId(),
 				this.getHash(),
@@ -62,6 +64,16 @@ export class ApplicationModule extends ServiceModule {
 			);
 		}
 
-		return ApplicationModule.authUseCase;
+		return ApplicationModule.authenticationUseCase;
+	}
+
+	getAuthorizationUseCase() {
+		if (!ApplicationModule.authorizationUseCase) {
+			ApplicationModule.authorizationUseCase = new AuthorizationUseCase(
+				this.getToken(),
+			);
+		}
+
+		return ApplicationModule.authorizationUseCase;
 	}
 }
